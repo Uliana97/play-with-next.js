@@ -6,7 +6,7 @@ interface IResultsTitle {
 }
 
 function ResultsTitle({ date }: IResultsTitle) {
-  const humanReadableDate = new Date(date).toLocaleDateString("en-US", {
+  const humanReadableDate = date.toLocaleDateString("en-US", {
     month: "long",
     year: "numeric",
   });

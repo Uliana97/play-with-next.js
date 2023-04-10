@@ -1,19 +1,28 @@
-import { Fragment } from "react";
+import { getAllEvents } from "@/helpers/api-util";
 
-import { getAllEvents } from "@/dummy-data";
 import EventList from "@/components/events/event-list";
 import EventsSearch from "@/components/events/events-search";
+
 import { IEvent } from "@/components/events/types";
 
-const AllEventsPage = () => {
-  const events: IEvent[] = getAllEvents();
-
+const AllEventsPage = ({ allEvents }: { allEvents: IEvent[] }) => {
   return (
-    <Fragment>
+    <>
       <EventsSearch />
-      <EventList items={events} />
-    </Fragment>
+      <EventList items={allEvents} />
+    </>
   );
+};
+
+export const getStaticProps = async () => {
+  const allEvents = await getAllEvents();
+
+  return {
+    props: {
+      allEvents,
+    },
+    revalidate: 60, // in sec
+  };
 };
 
 export default AllEventsPage;

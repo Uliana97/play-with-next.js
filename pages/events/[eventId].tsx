@@ -1,22 +1,24 @@
 import { Fragment } from "react";
-import { useRouter } from "next/router";
+import { ParsedUrlQuery } from "querystring";
+import { GetStaticProps, GetStaticPaths } from "next";
 
-import { getEventById } from "@/dummy-data";
 import EventSummary from "@/components/event-detail/event-summary";
 import EventLogistics from "@/components/event-detail/event-logistics";
 import EventContent from "@/components/event-detail/event-content";
-import ErrorAlert from "@/components/ui/error-alert";
 
-function EventDetailPage() {
-  const router = useRouter();
+import { getFeaturedEvents, getEventById } from "@/helpers/api-util";
+import { IEvent } from "@/components/events/types";
 
-  const event = getEventById(router.query.eventId);
+interface IParams extends ParsedUrlQuery {
+  eventId: string;
+}
 
+function EventDetailPage({ event }: { event: IEvent }) {
   if (!event) {
     return (
-      <ErrorAlert>
-        <p>No event found!</p>
-      </ErrorAlert>
+      <div className="center">
+        <p>LOADING...</p>
+      </div>
     );
   }
 
@@ -35,5 +37,33 @@ function EventDetailPage() {
     </Fragment>
   );
 }
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  const { eventId } = context.params as IParams;
+  const event = await getEventById(eventId);
+
+  if (!event) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: {
+      event: event,
+    },
+    revalidate: 1800, // in sec
+  };
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const events = await getFeaturedEvents();
+  const paths = events.map((e) => ({ params: { eventId: e.id } }));
+
+  return {
+    paths,
+    fallback: "blocking",
+  };
+};
 
 export default EventDetailPage;
