@@ -1,4 +1,5 @@
-import { Fragment } from "react";
+import Head from "next/head";
+
 import { ParsedUrlQuery } from "querystring";
 import { GetStaticProps, GetStaticPaths } from "next";
 
@@ -23,7 +24,12 @@ function EventDetailPage({ event }: { event: IEvent }) {
   }
 
   return (
-    <Fragment>
+    <>
+      <Head>
+        <title>Event - {event.title}</title>
+        <meta name="description" content={event.description} />
+      </Head>
+
       <EventSummary title={event.title} />
       <EventLogistics
         date={event.date}
@@ -34,7 +40,7 @@ function EventDetailPage({ event }: { event: IEvent }) {
       <EventContent>
         <p>{event.description}</p>
       </EventContent>
-    </Fragment>
+    </>
   );
 }
 

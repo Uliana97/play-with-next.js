@@ -1,3 +1,5 @@
+import Head from "next/head";
+
 import { GetServerSideProps } from "next";
 import { ParsedUrlQuery } from "querystring";
 
@@ -22,36 +24,37 @@ function FilteredEventsPage({
   hasError: boolean;
   date: Date;
 }) {
-  if (hasError) {
-    return (
-      <>
-        <ErrorAlert>
-          <p>Invalid filter. Please adjust your values!</p>
-        </ErrorAlert>
-        <div className="center">
-          <Button link="/events">Show All Events</Button>
-        </div>
-      </>
-    );
-  }
-
-  if (!filteredEvents || filteredEvents.length === 0) {
-    return (
-      <>
-        <ErrorAlert>
-          <p>No events found for the chosen filter!</p>
-        </ErrorAlert>
-        <div className="center">
-          <Button link="/events">Show All Events</Button>
-        </div>
-      </>
-    );
-  }
-
   return (
     <>
-      <ResultsTitle date={date} />
-      <EventList items={filteredEvents} />
+      <Head>
+        <title>Events on {date.toLocaleDateString("en-US")}</title>
+        <meta name="description" content="Your filtered events" />
+      </Head>
+
+      {hasError ? (
+        <>
+          <ErrorAlert>
+            <p>Invalid filter. Please adjust your values!</p>
+          </ErrorAlert>
+          <div className="center">
+            <Button link="/events">Show All Events</Button>
+          </div>
+        </>
+      ) : !filteredEvents || filteredEvents.length === 0 ? (
+        <>
+          <ErrorAlert>
+            <p>No events found for the chosen filter!</p>
+          </ErrorAlert>
+          <div className="center">
+            <Button link="/events">Show All Events</Button>
+          </div>
+        </>
+      ) : (
+        <>
+          <ResultsTitle date={date} />
+          <EventList items={filteredEvents} />
+        </>
+      )}
     </>
   );
 }

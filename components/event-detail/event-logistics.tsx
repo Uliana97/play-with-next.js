@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import AddressIcon from "../icons/address-icon";
 import DateIcon from "../icons/date-icon";
 import LogisticsItem from "./logistics-item";
@@ -23,7 +25,7 @@ const EventLogistics = (props: IEventLogistics) => {
   return (
     <section className={classes.logistics}>
       <div className={classes.image}>
-        <img src={`/${image}`} alt={imageAlt} />
+        <Image src={`/${image}`} alt={imageAlt} width={400} height={400} />
       </div>
       <ul className={classes.list}>
         <LogisticsItem icon={DateIcon}>
