@@ -12,7 +12,7 @@ function NewComment(props: {
   ) => void;
 }) {
   const router = useRouter();
-  const eventId = router.query.toString();
+  const eventId = router.query.eventId as string;
   const [isInvalid, setIsInvalid] = useState(false);
 
   const emailInputRef = useRef<HTMLInputElement>(null);

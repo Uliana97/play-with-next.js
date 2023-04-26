@@ -1,16 +1,25 @@
 import classes from "./comment-list.module.css";
 
-interface ICommentsList {
-  comments: { id: string; name: string; comment: string }[];
+interface IComment {
+  comment: {
+    eventId: string;
+    name: string;
+    email: string;
+    comment: string;
+  };
+  _id: string;
 }
 
-function CommentList({ comments }: ICommentsList) {
-  console.log(comments);
+interface ICommentList {
+  comments: IComment[];
+}
+
+function CommentList({ comments }: ICommentList) {
   return (
     <ul className={classes.comments}>
       {comments &&
-        comments.map((comment) => (
-          <li key={comment.id}>
+        comments.map(({ comment, _id }) => (
+          <li key={_id}>
             <p>{comment.comment}</p>
             <div>
               By <address>{comment.name}</address>
