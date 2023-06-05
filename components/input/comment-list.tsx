@@ -1,6 +1,6 @@
 import classes from "./comment-list.module.css";
 
-interface IComment {
+export interface IComment {
   comment: {
     eventId: string;
     name: string;
@@ -17,7 +17,7 @@ interface ICommentList {
 function CommentList({ comments }: ICommentList) {
   return (
     <ul className={classes.comments}>
-      {comments &&
+      {comments.length ? (
         comments.map(({ comment, _id }) => (
           <li key={_id}>
             <p>{comment.comment}</p>
@@ -25,7 +25,10 @@ function CommentList({ comments }: ICommentList) {
               By <address>{comment.name}</address>
             </div>
           </li>
-        ))}
+        ))
+      ) : (
+        <p>No comments yet :(</p>
+      )}
     </ul>
   );
 }

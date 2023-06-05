@@ -5,7 +5,6 @@ export const mongoURL =
 
 export const connectDB = async (client: MongoClient) => {
   const myClaster = await client.connect();
-  console.log("Connected to the database", myClaster);
   const db = myClaster.db("events");
   return db;
 };

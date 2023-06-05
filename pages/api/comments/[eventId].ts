@@ -81,7 +81,7 @@ const handler = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
       res.status(201).json({ comments });
     }
   } catch (err) {
-    res.status(403).json({ err: "Error!" });
+    res.status(403).json({ err });
   }
 };
 

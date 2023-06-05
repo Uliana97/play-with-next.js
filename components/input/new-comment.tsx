@@ -1,4 +1,4 @@
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, use, useEffect, useRef, useState } from "react";
 import classes from "./new-comment.module.css";
 import { useRouter } from "next/router";
 import { validateEmail } from "@/helpers/emailValidation";
@@ -18,8 +18,9 @@ function NewComment(props: {
   const emailInputRef = useRef<HTMLInputElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const commentInputRef = useRef<HTMLTextAreaElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
-  function sendCommentHandler(event: FormEvent<HTMLFormElement>) {
+  const sendCommentHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const enteredEmail = emailInputRef.current?.value;
@@ -39,11 +40,20 @@ function NewComment(props: {
       return;
     }
 
+    if (isInvalid) {
+      setIsInvalid(false);
+    }
+
     props.onAddComment(eventId, enteredEmail, enteredName, enteredComment);
-  }
+    formRef.current?.reset();
+  };
 
   return (
-    <form className={classes.form} onSubmit={(e) => sendCommentHandler(e)}>
+    <form
+      className={classes.form}
+      ref={formRef}
+      onSubmit={(e) => sendCommentHandler(e)}
+    >
       <div className={classes.row}>
         <div className={classes.control}>
           <label htmlFor="email">Your email</label>
