@@ -1,4 +1,4 @@
-import { FormEvent, use, useEffect, useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import classes from "./new-comment.module.css";
 import { useRouter } from "next/router";
 import { validateEmail } from "@/helpers/emailValidation";
